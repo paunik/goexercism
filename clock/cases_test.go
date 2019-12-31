@@ -36,6 +36,7 @@ var addTests = []struct {
 	h, m, a int
 	want    string
 }{
+	{10, 1, -3, "09:58"},   // add minutes
 	{10, 0, 3, "10:03"},    // add minutes
 	{6, 41, 0, "06:41"},    // add no minutes
 	{0, 45, 40, "01:25"},   // add to next hour
