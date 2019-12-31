@@ -3,7 +3,7 @@ package grains
 import "errors"
 
 // Square calculates number of grains on specified field on Chess board
-func Square(n int) (uint64, error) {
+func GrainsOnField(n int) (uint64, error) {
 	if n <= 0 || n > 64 {
 		return 0, errors.New("Invalid input")
 	}
@@ -15,7 +15,7 @@ func Square(n int) (uint64, error) {
 func Total() uint64 {
 	var s uint64
 	for i := 0; i < 65; i++ {
-		r, _ := Square(i)
+		r, _ := GrainsOnField(i)
 		s += r
 	}
 
