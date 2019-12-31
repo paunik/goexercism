@@ -5,7 +5,7 @@ package grains
 // Problem Specifications Version: 1.2.0
 
 // returns the number of grains on the square
-var squareTests = []struct {
+var grainsOnFieldTests = []struct {
 	description string
 	input       int
 	expectedVal uint64

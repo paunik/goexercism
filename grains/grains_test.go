@@ -4,9 +4,9 @@ import (
 	"testing"
 )
 
-func TestSquare(t *testing.T) {
-	for _, test := range squareTests {
-		actualVal, actualErr := Square(test.input)
+func TestGrainsOnField(t *testing.T) {
+	for _, test := range grainsOnFieldTests {
+		actualVal, actualErr := GrainsOnField(test.input)
 
 		// check actualVal only if no error expected
 		if !test.expectError && actualVal != test.expectedVal {
@@ -37,8 +37,8 @@ func BenchmarkSquare(b *testing.B) {
 
 	for i := 0; i < b.N; i++ {
 
-		for _, test := range squareTests {
-			Square(test.input)
+		for _, test := range grainsOnFieldTests {
+			GrainsOnField(test.input)
 		}
 
 	}
