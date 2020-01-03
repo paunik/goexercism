@@ -2,6 +2,10 @@ package clock
 
 import "fmt"
 
+const HoursInDay = 24
+const MinutesInHour = 60
+const LastHour = 23
+
 // Clock represents clock implementation
 type Clock struct {
 	m int
@@ -9,21 +13,21 @@ type Clock struct {
 
 // New constructor for Clock Type
 func New(h int, m int) Clock {
-	h, m = hourAndMinute(h*60 + m)
-	return Clock{h*60 + m}
+	h, m = hourAndMinute(h*MinutesInHour + m)
+	return Clock{h*MinutesInHour + m}
 }
 
 // Add method adds minutes to current instance
 func (c Clock) Add(a int) Clock {
 	h, m := hourAndMinute(c.m + a)
-	c.m = h*60 + m
+	c.m = h*MinutesInHour + m
 	return c
 }
 
 // Subtract method subtract minutes to current instance
 func (c Clock) Subtract(s int) Clock {
 	h, m := hourAndMinute(c.m - s)
-	c.m = h*60 + m
+	c.m = h*MinutesInHour + m
 	return c
 }
 
@@ -36,21 +40,21 @@ func (c Clock) String() string {
 // hourAndMinute calculate hour and minute based on total number of mintues
 func hourAndMinute(min int) (h, m int) {
 	if min >= 0 {
-		h = (min / 60) % 24
-		m = min % 60
+		h = (min / MinutesInHour) % HoursInDay
+		m = min % MinutesInHour
 	} else {
 		min = -min
-		h = 23 - (min/60)%24
-		m = 60 - (min % 60)
+		h = LastHour - (min/MinutesInHour)%HoursInDay
+		m = MinutesInHour - (min % MinutesInHour)
 	}
 
-	if h == 24 {
+	if h == HoursInDay {
 		h = 0
 	}
 
-	if m == 60 {
+	if m == MinutesInHour {
 		m = 0
-		h = (h + 1) % 24
+		h = (h + 1) % HoursInDay
 	}
 
 	return
