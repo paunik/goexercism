@@ -1,7 +1,5 @@
 package letter
 
-import "sync"
-
 // FreqMap records the frequency of each rune in a given text.
 type FreqMap map[rune]int
 
@@ -17,36 +15,20 @@ func Frequency(s string) FreqMap {
 
 // ConcurrentFrequency counts the frequency of each rune in a given slice of texts and returns this
 // data as a FreqMap. Does this work in concurent manner
-func ConcurrentFrequency(text []string) FreqMap {
-	m := FreqMap{}
-	c := make(chan rune, 1)
-	var wg sync.WaitGroup
-
-	// read
-	go func() {
-		for {
-			r, ok := <-c
-			if ok {
-				m[r]++
-			} else {
-				return
-			}
-		}
-	}()
-
-	// write
-	f := func(s string, c chan rune, wg *sync.WaitGroup) {
-		for _, r := range s {
-			c <- r
-		}
-		wg.Done()
+func ConcurrentFrequency(list []string) FreqMap {
+	resCh := make(chan FreqMap, 3)
+	for _, s := range list {
+		go func(str string) {
+			resCh <- Frequency(str)
+		}(s)
 	}
 
-	// split job in goroutines
-	for _, s := range text {
-		wg.Add(1)
-		go f(s, c, &wg)
-		wg.Wait()
+	res := FreqMap{}
+
+	for range list {
+		for letter, freq := range <-resCh {
+			res[letter] += freq
+		}
 	}
-	return m
+	return res
 }
